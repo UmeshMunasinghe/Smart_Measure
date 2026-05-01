@@ -47,7 +47,9 @@ function loadState() {
 
 // ---- MONTH HELPERS ----
 function getMonthKey(date) {
-  return date.toISOString().slice(0, 7); // "YYYY-MM"
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  return `${y}-${m}`; // "YYYY-MM" using local time, not UTC
 }
 
 function formatMonthLabel(key) {
