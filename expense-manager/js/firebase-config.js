@@ -17,8 +17,9 @@ import { initializeApp }
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import { getFirestore, enableIndexedDbPersistence }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  initializeFirestore, persistentLocalCache, persistentMultipleTabManager
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ---- YOUR FIREBASE CONFIG ----
 const firebaseConfig = {
@@ -33,15 +34,13 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const auth        = getAuth(firebaseApp);
-const db          = getFirestore(firebaseApp);
 
-// Enable offline support — app works without internet
-enableIndexedDbPersistence(db).catch((err) => {
-  if (err.code === 'failed-precondition') {
-    console.warn('Offline persistence unavailable: multiple tabs open');
-  } else if (err.code === 'unimplemented') {
-    console.warn('Offline persistence not supported in this browser');
-  }
+// Initialize Firestore with persistent offline cache
+// Works across multiple tabs and survives page refreshes
+const db = initializeFirestore(firebaseApp, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
 });
 
 export { auth, db, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged };

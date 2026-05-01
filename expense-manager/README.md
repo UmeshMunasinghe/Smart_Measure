@@ -1,37 +1,91 @@
-# 💰 Expense Tracker — PWA
+# 💰 Oshi Smart Expenses — PWA
 
-A mobile-friendly Progressive Web App to track monthly expenses.
-
-## Features
-- Set monthly capital/budget per month
-- Add expenses with categories (Groceries, Education, Medicine, Fresh Food, Fast Food, Transport, Utilities, Clothing, Fun, Other)
-- Add custom categories
-- Dashboard with balance cards, progress bar, category breakdown
-- Full expense history with search & filter
-- Works offline (PWA)
-- **Install on phone** — works like a native app
+A mobile-friendly Progressive Web App to track monthly expenses with cloud sync via Firebase.
 
 ---
 
-## 🚀 Free Hosting Options
+## 📁 Project Structure
 
-### Option 1: Netlify (Easiest — drag & drop)
-1. Go to [netlify.com](https://netlify.com) and sign up free
-2. Click **"Add new site" → "Deploy manually"**
-3. Drag the entire `expense-manager` folder onto the page
-4. Done! You get a free URL like `https://your-app.netlify.app`
+```
+expense-manager/
+├── index.html              ← Main HTML shell
+├── style.css               ← All styles
+├── manifest.json           ← PWA manifest
+├── sw.js                   ← Service worker (offline support)
+├── firestore.rules         ← Firestore security rules (paste into Firebase Console)
+│
+├── js/
+│   ├── firebase-config.js  ← 🔑 YOUR FIREBASE KEYS GO HERE
+│   ├── state.js            ← App state, categories, helper functions
+│   ├── auth.js             ← Google sign-in / sign-out
+│   ├── db.js               ← All Firestore read/write operations
+│   ├── render.js           ← All UI drawing functions
+│   ├── events.js           ← All button clicks and listeners
+│   └── app.js              ← Entry point, starts everything
+│
+└── icons/
+    ├── icon-192.svg
+    └── icon-512.svg
+```
 
-### Option 2: GitHub Pages
-1. Create a free account at [github.com](https://github.com)
-2. Create a new repository (e.g. `expense-tracker`)
-3. Upload all files in this folder to the repo
-4. Go to **Settings → Pages → Source: main branch / root**
-5. Your app is live at `https://yourusername.github.io/expense-tracker`
+---
 
-### Option 3: Vercel
-1. Go to [vercel.com](https://vercel.com) and sign up free
-2. Click **"Add New Project" → "Browse"** and upload the folder
-3. Deploy — get a free URL instantly
+## 🔥 Firebase Setup (Required for cloud sync)
+
+### Step 1 — Create a Firebase Project
+1. Go to [console.firebase.google.com](https://console.firebase.google.com)
+2. Click **"Add project"** → enter a name (e.g. `oshi-expenses`) → Create
+
+### Step 2 — Enable Google Authentication
+1. In your project, go to **Build → Authentication → Get started**
+2. Click **"Google"** under Sign-in providers
+3. Toggle **Enable** → Save
+4. Set your **Project support email** (your Gmail)
+
+### Step 3 — Create Firestore Database
+1. Go to **Build → Firestore Database → Create database**
+2. Choose **"Start in production mode"** → Next
+3. Select a region close to you (e.g. `asia-south1` for Sri Lanka) → Enable
+
+### Step 4 — Apply Security Rules
+1. In Firestore, click the **"Rules"** tab
+2. Replace all existing text with the contents of `firestore.rules`
+3. Click **"Publish"**
+
+### Step 5 — Get Your Web App Config
+1. Go to **Project Settings** (gear icon) → **Your apps**
+2. Click **"Add app"** → choose **Web** (</> icon)
+3. Enter a nickname (e.g. `oshi-web`) → Register app
+4. Copy the `firebaseConfig` object values
+
+### Step 6 — Add Config to the App
+Open `js/firebase-config.js` and replace the placeholder values:
+
+```js
+const firebaseConfig = {
+  apiKey:            "AIzaSy...",          // ← your value
+  authDomain:        "oshi-expenses.firebaseapp.com",
+  projectId:         "oshi-expenses",
+  storageBucket:     "oshi-expenses.appspot.com",
+  messagingSenderId: "123456789",
+  appId:             "1:123456789:web:abc123"
+};
+```
+
+### Step 7 — Add Your Domain to Authorized Domains
+1. Go to **Authentication → Settings → Authorized domains**
+2. Click **"Add domain"**
+3. Add your Netlify URL (e.g. `your-app.netlify.app`)
+
+---
+
+## 🚀 Deploy to Netlify (Free)
+
+1. Go to [app.netlify.com/drop](https://app.netlify.com/drop)
+2. Open File Explorer, go **inside** the `expense-manager` folder
+3. Select **all files and folders** (Ctrl+A)
+4. Drag the selection onto the Netlify drop zone
+5. Done — you get a free URL like `https://your-app.netlify.app`
 
 ---
 
@@ -39,15 +93,19 @@ A mobile-friendly Progressive Web App to track monthly expenses.
 
 ### Android (Chrome)
 1. Open the app URL in Chrome
-2. Tap the **⋮ menu → "Add to Home screen"**
-3. Tap "Add" — it appears like a native app!
+2. Tap **⋮ menu → "Add to Home screen"**
 
 ### iPhone (Safari)
-1. Open the app URL in Safari
-2. Tap the **Share button (□↑) → "Add to Home Screen"**
-3. Tap "Add" — done!
+1. Open the app URL in **Safari** (must be Safari)
+2. Tap **Share button (□↑) → "Add to Home Screen"**
 
 ---
 
-## Local Development
-Just open `index.html` in any browser. No build step needed.
+## ✨ Features
+- Google Sign-In — your data is private to your account
+- Monthly capital/budget setting per month
+- Add expenses with 10 built-in categories + custom categories
+- Dashboard: balance cards, progress bar, category breakdown
+- History tab: search and filter by category
+- Works offline — data syncs when back online
+- Installs as a native-like app on iPhone and Android

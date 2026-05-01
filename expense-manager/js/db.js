@@ -12,7 +12,7 @@
 import { db } from './firebase-config.js';
 import {
   doc, collection, getDoc, getDocs, setDoc, addDoc,
-  deleteDoc, query, where, orderBy, onSnapshot, serverTimestamp
+  deleteDoc, query, where, orderBy, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { state, DEFAULT_CATEGORIES } from './state.js';
