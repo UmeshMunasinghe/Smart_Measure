@@ -1,5 +1,5 @@
 // Service Worker — enables offline use and "Add to Home Screen"
-const CACHE_NAME = 'expense-tracker-v2';
+const CACHE_NAME = 'expense-tracker-v3';
 const ASSETS = [
   '/',
   '/index.html',
