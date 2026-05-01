@@ -17,7 +17,7 @@ const DEFAULT_CATEGORIES = [
 
 // ---- STATE ----
 let state = {
-  currency: '$',
+  currency: 'LKR ',
   categories: [...DEFAULT_CATEGORIES],
   months: {},       // { "2026-05": { capital: 0, expenses: [] } }
   currentMonth: '', // "YYYY-MM"
