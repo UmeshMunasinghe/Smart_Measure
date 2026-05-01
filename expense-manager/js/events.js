@@ -15,12 +15,16 @@ import {
   renderAll, renderHistory, renderCategoryGrid,
   renderSettingsTags, renderDashboard, renderFilterDropdown
 } from './render.js';
+import { renderCharts, destroyCharts } from './charts.js';
 
 // Tracks which category is selected in the Add form
 let selectedCategory = null;
 
 // Tracks which expense is pending deletion
 let pendingDeleteId  = null;
+
+// Tracks current history view: 'list' or 'chart'
+let historyView = 'list';
 
 // ---- SETUP ALL LISTENERS ----
 export function setupEventListeners() {
@@ -30,6 +34,7 @@ export function setupEventListeners() {
   setupCapitalListeners();
   setupAddExpenseListeners();
   setupHistoryListeners();
+  setupChartToggleListeners();
   setupSettingsListeners();
   setupDeleteListeners();
   setupModalOverlayClose();
@@ -62,18 +67,21 @@ function setupMonthNavListeners() {
 
 async function navigateMonth(direction) {
   const [y, m] = state.currentMonth.split('-').map(Number);
-  // direction: -1 = previous, +1 = next
   const d = new Date(y, m - 1 + direction, 1);
   const newKey = getMonthKey(d);
   state.currentMonth = newKey;
   ensureMonth(newKey);
 
-  // Load data for the new month if not already cached
   if (!state.months[newKey] || state.months[newKey].expenses.length === 0) {
     await loadMonth(newKey);
   }
 
   renderAll(selectedCategory);
+
+  // If chart view is active, refresh charts for new month
+  if (historyView === 'chart') {
+    setTimeout(() => renderCharts(), 50);
+  }
 }
 
 // ---- CAPITAL ----
@@ -163,6 +171,28 @@ function refreshHistory() {
   const search = document.getElementById('searchInput').value;
   const filter = document.getElementById('filterCategory').value;
   renderHistory(search, filter);
+}
+
+// ---- CHART TOGGLE ----
+function setupChartToggleListeners() {
+  document.getElementById('viewListBtn').addEventListener('click', () => {
+    historyView = 'list';
+    document.getElementById('viewListBtn').classList.add('active');
+    document.getElementById('viewChartBtn').classList.remove('active');
+    document.getElementById('historyListView').style.display = 'block';
+    document.getElementById('historyChartView').style.display = 'none';
+    destroyCharts();
+  });
+
+  document.getElementById('viewChartBtn').addEventListener('click', () => {
+    historyView = 'chart';
+    document.getElementById('viewChartBtn').classList.add('active');
+    document.getElementById('viewListBtn').classList.remove('active');
+    document.getElementById('historyListView').style.display = 'none';
+    document.getElementById('historyChartView').style.display = 'block';
+    // Small delay so canvas is visible before Chart.js measures it
+    setTimeout(() => renderCharts(), 50);
+  });
 }
 
 // ---- SETTINGS ----

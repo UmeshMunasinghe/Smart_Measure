@@ -134,17 +134,48 @@
   <!-- ===== HISTORY TAB ===== -->
   <section class="tab-content" id="tab-history">
     <div class="history-month-label" id="historyMonthLabel"></div>
-    <div class="history-controls">
-      <input type="text" id="searchInput" placeholder="🔍 Search expenses..." />
-      <select id="filterCategory">
-        <option value="">All Categories</option>
-      </select>
+
+    <!-- View toggle: List / Charts -->
+    <div class="view-toggle">
+      <button class="view-btn active" id="viewListBtn">☰ List</button>
+      <button class="view-btn" id="viewChartBtn">📈 Charts</button>
     </div>
-    <div class="expense-list" id="historyList"></div>
-    <div class="empty-state" id="historyEmpty" style="display:none">
-      <div class="empty-icon">📭</div>
-      <div>No expenses found</div>
+
+    <!-- LIST VIEW -->
+    <div id="historyListView">
+      <div class="history-controls">
+        <input type="text" id="searchInput" placeholder="🔍 Search expenses..." />
+        <select id="filterCategory">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+      <div class="expense-list" id="historyList"></div>
+      <div class="empty-state" id="historyEmpty" style="display:none">
+        <div class="empty-icon">📭</div>
+        <div>No expenses found</div>
+      </div>
     </div>
+
+    <!-- CHART VIEW -->
+    <div id="historyChartView" style="display:none">
+      <div class="chart-card">
+        <div class="chart-title">Daily Spending</div>
+        <div class="chart-wrap">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">By Category</div>
+        <div class="chart-wrap chart-wrap-pie">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+      <div class="empty-state" id="chartEmpty" style="display:none">
+        <div class="empty-icon">📊</div>
+        <div>No expenses to chart this month</div>
+      </div>
+    </div>
+
   </section>
 
 </div><!-- end #app -->
@@ -223,6 +254,8 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <!-- Firebase SDK -->
 <script type="module" src="js/app.js"></script>
 </body>
