@@ -5,7 +5,7 @@
 // ============================================================
 
 import {
-  state, fmt, formatDate, formatMonthLabel,
+  state, fmt, formatDate, formatMonthLabel, getMonthKey,
   getCategoryById, calcTotals, calcCategoryTotals
 } from './state.js';
 
@@ -60,6 +60,14 @@ export function closeModal(id) {
 export function renderMonthLabel() {
   document.getElementById('monthLabel').textContent =
     formatMonthLabel(state.currentMonth);
+
+  // Disable the right arrow when already on the current month
+  const todayKey  = getMonthKey(new Date());
+  const nextBtn   = document.getElementById('nextMonth');
+  const isPresent = state.currentMonth >= todayKey;
+  nextBtn.disabled = isPresent;
+  nextBtn.style.opacity = isPresent ? '0.3' : '1';
+  nextBtn.style.cursor  = isPresent ? 'not-allowed' : 'pointer';
 }
 
 // ---- DASHBOARD ----
