@@ -336,13 +336,15 @@ input:focus, select:focus { border-color: var(--primary); }
 .input-prefix-wrap { position: relative; }
 .input-prefix {
   position: absolute;
-  left: 14px; top: 50%;
+  left: 12px; top: 50%;
   transform: translateY(-50%);
   font-weight: 700;
+  font-size: 0.9rem;
   color: var(--text-muted);
   pointer-events: none;
+  white-space: nowrap;
 }
-.input-prefix-wrap input { padding-left: 30px; }
+.input-prefix-wrap input { padding-left: 52px; }
 
 /* ===== CATEGORY GRID ===== */
 .category-grid {
