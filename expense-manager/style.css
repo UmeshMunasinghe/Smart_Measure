@@ -765,3 +765,22 @@ input:focus, select:focus { border-color: var(--primary); }
 .chart-wrap-pie {
   height: 280px;
 }
+
+/* ===== BUTTON SAVING SPINNER ===== */
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.btn-primary:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}

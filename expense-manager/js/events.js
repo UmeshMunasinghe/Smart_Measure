@@ -96,6 +96,10 @@ function setupCapitalListeners() {
     const val = parseFloat(document.getElementById('capitalInput').value);
     if (isNaN(val) || val < 0) { showToast('Please enter a valid amount'); return; }
 
+    const btn = document.getElementById('saveCapitalBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span> Saving...';
+
     try {
       await saveMonthCapital(state.currentMonth, val);
       closeModal('capitalModal');
@@ -103,6 +107,9 @@ function setupCapitalListeners() {
       showToast('Capital updated ✓');
     } catch {
       showToast('Failed to save. Check your connection.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Save';
     }
   });
 
@@ -138,6 +145,10 @@ function setupAddExpenseListeners() {
       monthKey:    state.currentMonth,
     };
 
+    const btn = document.getElementById('addExpenseBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span> Saving...';
+
     try {
       await addExpense(expense);
 
@@ -155,6 +166,9 @@ function setupAddExpenseListeners() {
       showToast('Expense added ✓');
     } catch {
       showToast('Failed to save. Check your connection.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Add Expense';
     }
   });
 }
