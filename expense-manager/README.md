@@ -1,4 +1,4 @@
-# 💰 Oshi Smart Expenses — PWA
+# 💰 Oshi Wallet — PWA
 
 A mobile-friendly Progressive Web App to track monthly expenses with cloud sync via Firebase.
 
