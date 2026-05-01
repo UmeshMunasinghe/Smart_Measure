@@ -89,6 +89,12 @@ export function renderDashboard() {
   document.querySelector('.card-balance')
     .classList.toggle('over-budget', balance < 0);
 
+  // Fun: change app name based on remaining balance
+  const appTitle = document.querySelector('.app-title');
+  if (appTitle) {
+    appTitle.textContent = balance < 0 ? 'Wesi Wallet 😅' : 'Oshi Wallet';
+  }
+
   // Progress bar
   const pct  = capital > 0 ? Math.min((spent / capital) * 100, 100) : 0;
   const fill = document.getElementById('progressFill');
