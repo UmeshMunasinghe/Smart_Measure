@@ -18,10 +18,9 @@ import {
 import { state, DEFAULT_CATEGORIES } from './state.js';
 
 // ---- HELPERS ----
-const userRef  = () => doc(db, 'users', state.user.uid);
-const monthRef = (key) => doc(db, 'users', state.user.uid, 'months', key);
-const expCol   = () => collection(db, 'users', state.user.uid, 'expenses');
-const settingsRef = () => doc(db, 'users', state.user.uid, 'settings');
+const monthRef    = (key) => doc(db, 'users', state.user.uid, 'months', key);
+const expCol      = ()    => collection(db, 'users', state.user.uid, 'expenses');
+const settingsRef = ()    => doc(db, 'users', state.user.uid, 'settings', 'prefs');
 
 // ---- SETTINGS ----
 
