@@ -1,11 +1,17 @@
 // Service Worker — enables offline use and "Add to Home Screen"
-const CACHE_NAME = 'expense-tracker-v1';
+const CACHE_NAME = 'expense-tracker-v2';
 const ASSETS = [
   '/',
   '/index.html',
   '/style.css',
-  '/app.js',
   '/manifest.json',
+  '/js/app.js',
+  '/js/auth.js',
+  '/js/db.js',
+  '/js/events.js',
+  '/js/render.js',
+  '/js/state.js',
+  '/js/firebase-config.js',
 ];
 
 // Install: cache all assets
