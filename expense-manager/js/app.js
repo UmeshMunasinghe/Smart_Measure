@@ -18,8 +18,34 @@ document.addEventListener('DOMContentLoaded', () => {
   showLoading('Starting...');
 
   // Register service worker for offline/PWA support
+  // Auto-reloads the page when a new version is deployed
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register('sw.js').then(reg => {
+
+      // Check for updates every 60 seconds
+      setInterval(() => reg.update(), 60 * 1000);
+
+      // When a new SW is waiting, activate it immediately
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // New version available — tell SW to skip waiting
+            newWorker.postMessage('skipWaiting');
+          }
+        });
+      });
+
+    }).catch(() => {});
+
+    // When SW takes control, reload the page to get fresh files
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
   }
 
   // Listen for Firebase auth state changes
