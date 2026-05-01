@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#6C63FF" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ExpenseTracker" />
+  <meta name="description" content="Track your monthly expenses easily" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.svg" />
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===== APP SHELL ===== -->
+<div id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">💰</span>
+      <span class="app-title">ExpenseTracker</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Month Selector -->
+  <div class="month-bar">
+    <button class="arrow-btn" id="prevMonth">&#8249;</button>
+    <span class="month-label" id="monthLabel"></span>
+    <button class="arrow-btn" id="nextMonth">&#8250;</button>
+  </div>
+
+  <!-- Tab Navigation -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+    <button class="tab-btn" data-tab="add">➕ Add</button>
+    <button class="tab-btn" data-tab="history">📋 History</button>
+  </nav>
+
+  <!-- ===== DASHBOARD TAB ===== -->
+  <section class="tab-content active" id="tab-dashboard">
+
+    <!-- Balance Cards -->
+    <div class="cards-row">
+      <div class="card card-capital">
+        <div class="card-label">Monthly Capital</div>
+        <div class="card-value" id="capitalDisplay">$0.00</div>
+        <button class="card-edit-btn" id="editCapitalBtn">Edit</button>
+      </div>
+      <div class="card card-spent">
+        <div class="card-label">Total Spent</div>
+        <div class="card-value" id="spentDisplay">$0.00</div>
+      </div>
+      <div class="card card-balance">
+        <div class="card-label">Remaining</div>
+        <div class="card-value" id="balanceDisplay">$0.00</div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <span>Budget Used</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div class="section-title">Spending by Category</div>
+    <div class="category-list" id="categoryBreakdown"></div>
+
+    <!-- Recent Expenses -->
+    <div class="section-title">Recent Expenses</div>
+    <div class="expense-list" id="recentExpenses"></div>
+
+  </section>
+
+  <!-- ===== ADD EXPENSE TAB ===== -->
+  <section class="tab-content" id="tab-add">
+    <div class="form-card">
+      <h2 class="form-title">Add Expense</h2>
+
+      <div class="form-group">
+        <label>Amount</label>
+        <div class="input-prefix-wrap">
+          <span class="input-prefix" id="currencySymbolInput">$</span>
+          <input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <div class="category-grid" id="categoryGrid"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Description <span class="optional">(optional)</span></label>
+        <input type="text" id="descInput" placeholder="e.g. Weekly groceries" maxlength="80" />
+      </div>
+
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="dateInput" />
+      </div>
+
+      <button class="btn-primary" id="addExpenseBtn">Add Expense</button>
+    </div>
+  </section>
+
+  <!-- ===== HISTORY TAB ===== -->
+  <section class="tab-content" id="tab-history">
+    <div class="history-controls">
+      <input type="text" id="searchInput" placeholder="🔍 Search expenses..." />
+      <select id="filterCategory">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+    <div class="expense-list" id="historyList"></div>
+    <div class="empty-state" id="historyEmpty" style="display:none">
+      <div class="empty-icon">📭</div>
+      <div>No expenses found</div>
+    </div>
+  </section>
+
+</div><!-- end #app -->
+
+<!-- ===== MODALS ===== -->
+
+<!-- Set Capital Modal -->
+<div class="modal-overlay" id="capitalModal">
+  <div class="modal">
+    <div class="modal-title">Set Monthly Capital</div>
+    <div class="form-group">
+      <label>Capital Amount</label>
+      <div class="input-prefix-wrap">
+        <span class="input-prefix" id="currencySymbolCapital">$</span>
+        <input type="number" id="capitalInput" placeholder="0.00" min="0" step="0.01" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelCapitalBtn">Cancel</button>
+      <button class="btn-primary" id="saveCapitalBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-title">⚙️ Settings</div>
+
+    <div class="form-group">
+      <label>Currency Symbol</label>
+      <input type="text" id="currencyInput" maxlength="3" placeholder="$" />
+    </div>
+
+    <div class="form-group">
+      <label>Custom Categories</label>
+      <div class="tag-input-wrap">
+        <input type="text" id="newCategoryInput" placeholder="Add category..." maxlength="30" />
+        <button class="btn-small" id="addCategoryBtn">Add</button>
+      </div>
+      <div class="tag-list" id="categoryTagList"></div>
+    </div>
+
+    <div class="form-group danger-zone">
+      <label>Danger Zone</label>
+      <button class="btn-danger" id="clearDataBtn">🗑️ Clear All Data</button>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" id="saveSettingsBtn">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-title">Delete Expense?</div>
+    <p style="color:#666;margin-bottom:1.5rem;">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
