@@ -784,3 +784,8 @@ input:focus, select:focus { border-color: var(--primary); }
   cursor: not-allowed;
   transform: none;
 }
+
+.btn-danger:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}

@@ -288,6 +288,11 @@ function setupDeleteListeners() {
 
   document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
     if (!pendingDeleteId) return;
+
+    const btn = document.getElementById('confirmDeleteBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span> Deleting...';
+
     try {
       await deleteExpense(pendingDeleteId, state.currentMonth);
       pendingDeleteId = null;
@@ -296,6 +301,9 @@ function setupDeleteListeners() {
       showToast('Expense deleted');
     } catch {
       showToast('Failed to delete. Check your connection.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Delete';
     }
   });
 
