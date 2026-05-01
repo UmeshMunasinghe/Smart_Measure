@@ -23,12 +23,13 @@ import {
 
 // ---- YOUR FIREBASE CONFIG ----
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyCpWTPZZqPPTve7SOyGYCkInyAJj19iNrE",
+  authDomain:        "oshi-expenses.firebaseapp.com",
+  projectId:         "oshi-expenses",
+  storageBucket:     "oshi-expenses.firebasestorage.app",
+  messagingSenderId: "393966251535",
+  appId:             "1:393966251535:web:7849e05a9fe59f5b393d7a",
+  measurementId: "G-335KMX4V9X"
 };
 
 // Initialize Firebase
