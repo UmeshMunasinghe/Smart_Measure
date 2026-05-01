@@ -1,14 +1,21 @@
 // ============================================================
 // firebase-config.js
 // Firebase initialization.
+//
 // IMPORTANT: Replace the placeholder values below with your
-// own Firebase project config.
+// own Firebase project config before deploying.
 //
 // How to get your config:
 //   1. Go to https://console.firebase.google.com
 //   2. Create a project (or open existing one)
 //   3. Project Settings → Your apps → Add Web App
 //   4. Copy the firebaseConfig object and paste values below
+//
+// Also required:
+//   - Enable Google Sign-In: Authentication → Sign-in method → Google
+//   - Create Firestore DB: Firestore Database → Create database
+//   - Apply security rules from firestore.rules
+//   - Add your hosted domain to: Authentication → Settings → Authorized domains
 // ============================================================
 
 import { initializeApp }
@@ -29,7 +36,7 @@ const firebaseConfig = {
   storageBucket:     "oshi-expenses.firebasestorage.app",
   messagingSenderId: "393966251535",
   appId:             "1:393966251535:web:7849e05a9fe59f5b393d7a",
-  measurementId: "G-335KMX4V9X"
+  measurementId:     "G-335KMX4V9X"
 };
 
 // Initialize Firebase
