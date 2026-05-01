@@ -1,6 +1,6 @@
 {
-  "name": "Expense Tracker",
-  "short_name": "Expenses",
+  "name": "Oshi Smart Expenses",
+  "short_name": "Oshi Expenses",
   "description": "Track your monthly expenses easily",
   "start_url": "/",
   "display": "standalone",
