@@ -12,7 +12,7 @@
 import { db } from './firebase-config.js';
 import {
   doc, collection, getDoc, getDocs, setDoc, addDoc,
-  deleteDoc, query, where, orderBy, serverTimestamp
+  deleteDoc, query, where, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { state, DEFAULT_CATEGORIES } from './state.js';
@@ -89,10 +89,14 @@ export async function saveMonthCapital(monthKey, capital) {
 /** Load all expenses for a specific month from Firestore into local cache */
 export async function loadMonthExpenses(monthKey) {
   try {
-    const q = query(expCol(), where('monthKey', '==', monthKey), orderBy('date', 'desc'));
+    // Use only 'where' filter — no orderBy to avoid needing a composite index
+    const q = query(expCol(), where('monthKey', '==', monthKey));
     const snap = await getDocs(q);
     if (!state.months[monthKey]) state.months[monthKey] = { capital: 0, expenses: [] };
-    state.months[monthKey].expenses = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    // Sort by date descending in JS instead of Firestore
+    state.months[monthKey].expenses = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
   } catch (err) {
     console.error('Failed to load expenses:', err);
   }
