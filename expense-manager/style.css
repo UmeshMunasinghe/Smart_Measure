@@ -423,6 +423,17 @@ input:focus, select:focus { border-color: var(--primary); }
 }
 
 /* ===== HISTORY ===== */
+.history-month-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: #ede9fe;
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 .history-controls {
   display: flex;
   gap: 8px;

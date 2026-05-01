@@ -191,6 +191,10 @@ function renderHistory() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const filterCat = document.getElementById('filterCategory').value;
 
+  // Update month label in history tab
+  document.getElementById('historyMonthLabel').textContent =
+    '📅 ' + formatMonthLabel(state.currentMonth);
+
   let expenses = [...data.expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
 
   if (search) {
